@@ -1,0 +1,12 @@
+# 個人の設定・実データ・ログは Git に入れない（機密保護）
+config/local.env
+logs/*
+!logs/.gitkeep
+shared/inbox/*
+shared/working/*
+shared/review/*
+shared/completed/*
+!shared/*/.gitkeep
+__pycache__/
+*.pyc
+.DS_Store

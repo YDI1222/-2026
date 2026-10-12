@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Obsidian → Google Drive 参照用コピーの定期実行設定（launchd）。
+  install_launchd.sh が __SCRIPT__ と __LOGDIR__ を置き換えて ~/Library/LaunchAgents に配置します。
+
+  実行時刻：
+    - 毎日 07:30（土曜 8:00 の SNS 週次生成より前に最新化するため）
+    - 毎日 22:00（過去の設定を引き継ぐ）
+  Mac がスリープ中だった場合、launchd は「次に起きた時」に1回まとめて実行します。
+  電源が切れていた時間の分は実行されません（もう1台のMacが代わりに実行する設計）。
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.yojo.obsidian-drive-sync</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__SCRIPT__</string>
+    <string>--apply</string>
+  </array>
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict>
+      <key>Hour</key><integer>7</integer>
+      <key>Minute</key><integer>30</integer>
+    </dict>
+    <dict>
+      <key>Hour</key><integer>22</integer>
+      <key>Minute</key><integer>0</integer>
+    </dict>
+  </array>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>StandardOutPath</key>
+  <string>__LOGDIR__/launchd_obsidian_sync.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__LOGDIR__/launchd_obsidian_sync.err.log</string>
+  <key>ProcessType</key>
+  <string>Background</string>
+</dict>
+</plist>
