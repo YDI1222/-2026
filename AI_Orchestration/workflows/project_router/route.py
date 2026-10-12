@@ -20,7 +20,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 AIO_ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, AIO_ROOT)
-from lib.common import log_event, now_jst  # noqa: E402
+from lib.common import keyword_hits, log_event, now_jst  # noqa: E402
 
 RULES_PATH = os.path.join(AIO_ROOT, "config", "router_rules.json")
 SHARED = os.path.join(AIO_ROOT, "shared")
@@ -34,15 +34,7 @@ def load_rules(path=RULES_PATH):
 
 
 def _hits(text, keywords):
-    hits = []
-    for kw in keywords:
-        if re.fullmatch(r"[A-Za-z0-9 ]+", kw):
-            # 英字キーワードは単語として一致した時だけ（"X" が "Excel" に反応しないように）
-            if re.search(r"(?<![A-Za-z])" + re.escape(kw) + r"(?![A-Za-z])", text, re.I):
-                hits.append(kw)
-        elif kw in text:
-            hits.append(kw)
-    return hits
+    return keyword_hits(text, keywords)
 
 
 def route(request, rules=None):

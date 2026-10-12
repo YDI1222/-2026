@@ -12,6 +12,7 @@
 | [docs/01_現状調査レポート.md](docs/01_現状調査レポート.md) | 2026-10-12 時点で確認した事実 |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | 全体の構成・AIの役割分担・費用 |
 | [docs/03_修復実装計画.md](docs/03_修復実装計画.md) | 直す順番とテスト方法 |
+| [docs/06_Obsidianをコンテンツ設計に反映する.md](docs/06_Obsidianをコンテンツ設計に反映する.md) | 本人の言葉を原稿の芯にする仕組み |
 | [AGENTS.md](AGENTS.md) | すべてのAIが守るルール |
 
 ## 中身
@@ -22,17 +23,19 @@ AI_Orchestration/
 ├── config/
 │   ├── local.env.example          … Mac ごとの場所の設定（コピーして local.env を作る）
 │   ├── obsidian_sync_excludes.txt … Drive に出さないフォルダ（業務記録など）
-│   └── router_rules.json          … 受付係の判定ルール（区分A〜H）
+│   ├── router_rules.json          … 受付係の判定ルール（区分A〜H）
+│   └── content_themes.json        … 気づきのテーマ分類
 ├── workflows/
 │   ├── obsidian_sync/   … Mac診断・Driveへのコピー・定期実行の登録
 │   ├── daily_briefing/  … 提案の種DBの健康診断・重複チェック・Scout指示文
-│   ├── sns_weekly/      … #発信候補の抽出・週次原稿の点検
+│   ├── content_design/  … Obsidian の本人の言葉を取り出す（Insight Digest）・原稿の指示文
+│   ├── sns_weekly/      … #発信候補の抽出・週次原稿の点検（本人の言葉の照合つき）
 │   ├── project_router/  … 受付係（区分判定・引き継ぎ票）
 │   └── healthcheck/     … クラウドの点検ルーチン用の指示文
 ├── shared/  … AI間の受け渡し（inbox→working→review→completed）※中身はGit対象外
 ├── lib/     … 共通部品（ログ・ロック・再試行・xlsx読み取り）
 ├── logs/    … 実行記録 ※Git対象外
-├── tests/   … テスト（34件）
+├── tests/   … テスト（49件）
 └── docs/
 ```
 

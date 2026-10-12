@@ -62,6 +62,9 @@ FALLBACK_AFTER_HOURS="${FALLBACK_AFTER_HOURS:-26}"
 OPEN_OBSIDIAN_BEFORE_SYNC="${OPEN_OBSIDIAN_BEFORE_SYNC:-0}"
 WAIT_FOR_OBSIDIAN_SEC="${WAIT_FOR_OBSIDIAN_SEC:-180}"
 MIRROR_DELETE="${MIRROR_DELETE:-0}"
+INSIGHT_DIGEST="${INSIGHT_DIGEST:-1}"
+INSIGHT_DAYS="${INSIGHT_DAYS:-14}"
+INSIGHT_SCOPE="${INSIGHT_SCOPE:-all}"
 
 # ---------- 安全確認 ----------
 VAULT_PATH="${VAULT_PATH%/}"
@@ -133,7 +136,7 @@ fi
 
 # ---------- コピー ----------
 # 空白を含むパスでも壊れないよう、引数は配列で組み立てる（bash 3.2 でも可）
-RSYNC_ARGS=(-r -t -v "--exclude-from=$EXCLUDES" "--exclude=$STATUS_NAME" "--exclude=_sync_backup/")
+RSYNC_ARGS=(-r -t -v "--exclude-from=$EXCLUDES" "--exclude=$STATUS_NAME" "--exclude=_sync_backup/" "--exclude=_AI_digest/")
 if [ "$MIRROR_DELETE" = 1 ]; then
   BACKUP_DIR="_sync_backup/$(date '+%Y%m%d_%H%M%S')"
   RSYNC_ARGS+=(--delete --backup "--backup-dir=$BACKUP_DIR")
@@ -213,6 +216,23 @@ verified_recent_files: $CHECKED
 verify_mismatch: $MISMATCH
 recent_notes: $NEWEST
 EOF
+
+# ---------- Insight Digest（Obsidian の本人の言葉を、コンテンツ設計の材料にする） ----------
+if [ "$INSIGHT_DIGEST" = 1 ]; then
+  if command -v python3 >/dev/null 2>&1; then
+    DIGEST_DIR="$DRIVE_DEST/_AI_digest"
+    mkdir -p "$DIGEST_DIR"
+    if DOUT="$(AIO_LOG_DIR="$LOG_DIR" python3 "$AIO_ROOT/workflows/content_design/insight_digest.py" \
+        --vault "$VAULT_PATH" --days "$INSIGHT_DAYS" --scope "$INSIGHT_SCOPE" \
+        --out "$DIGEST_DIR/insight_digest_latest.md" --json "$DIGEST_DIR/insight_digest_latest.json" 2>&1)"; then
+      log ok "Insight Digest を更新：$(printf '%s' "$DOUT" | head -n 1)"
+    else
+      log warn "Insight Digest の作成に失敗（コピー自体は成功）：$(printf '%s' "$DOUT" | tail -n 2)"
+    fi
+  else
+    log warn "python3 が無いため Insight Digest を作れません（コピー自体は成功）"
+  fi
+fi
 
 if [ "$MISMATCH" -gt 0 ]; then
   log warn "コピー後の照合で ${MISMATCH}/${CHECKED} 件が一致しません（Drive側の反映待ちの可能性）"

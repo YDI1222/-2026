@@ -106,3 +106,16 @@ def retry(func, attempts=3, wait_sec=2.0, retry_on=(OSError,)):
             if i < attempts - 1:
                 time.sleep(wait_sec * (2 ** i))
     raise last
+
+
+def keyword_hits(text, keywords):
+    """text に含まれるキーワードを返す。英数字だけのキーワードは単語として一致した時だけ数える
+    （"AI" が "MAIL" に、"X" が "Excel" に反応しないように）。"""
+    hits = []
+    for kw in keywords:
+        if re.fullmatch(r"[A-Za-z0-9 .\-]+", kw):
+            if re.search(r"(?<![A-Za-z])" + re.escape(kw) + r"(?![A-Za-z])", text, re.I):
+                hits.append(kw)
+        elif kw in text:
+            hits.append(kw)
+    return hits

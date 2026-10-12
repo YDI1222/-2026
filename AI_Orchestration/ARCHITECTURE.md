@@ -53,11 +53,13 @@ flowchart LR
     CL[Claude / Claude Code<br/>点検・修復・受付係]
   end
   I -->|Obsidian Sync| V --> S --> R
+  R --> DG[Insight Digest<br/>本人の言葉・ID付き]
+  DG --> GPT
   R --> GPT
   GPT --> DB
   GPT --> SNS
   CL -->|毎朝・毎週の点検| DB
-  CL -->|土曜の点検| SNS
+  CL -->|土曜の点検・引用の照合| SNS
   CL -->|鮮度の点検| R
   SNS --> A
   CL -->|異常の時だけ通知| A
@@ -68,10 +70,13 @@ flowchart LR
 |---|---|---|---|
 | ① Obsidian→Drive コピー | 保管庫 | Drive「Second Brain」 | ②③は前回のコピーで動ける |
 | ② Daily Briefing＋Scout | Web上の一次情報 | 提案の種DB | ①③ |
-| ③ SNS週次原稿 | Drive「Second Brain」＋提案の種DB | SNS原稿（確認待ち） | ①② |
+| ③ SNS週次原稿 | **Insight Digest（本人の言葉）**＋提案の種DB | SNS原稿（確認待ち） | ①② |
 | ④ 点検（Claude） | ①②③の結果 | 異常時の通知、PROJECT_STATUS 更新 | ①②③の実行そのもの |
 
 ---
+
+**オリジナリティの設計**（詳細は `docs/06`）：原稿の芯は必ず Obsidian の本人の言葉（INS）。
+外部の事実は2〜3割の脇役。引用は原文と機械で照合し、AIによる「本人の言葉」の創作を防ぐ。
 
 ## 4. データの置き場所
 
