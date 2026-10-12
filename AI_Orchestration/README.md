@@ -39,15 +39,18 @@ AI_Orchestration/
 └── docs/
 ```
 
+## まず試すだけなら
+
+**[docs/07_Macで試す手順_初心者向け.md](docs/07_Macで試す手順_初心者向け.md)**（約15分・ノートは読むだけ・何も送らない）
+
 ## Mac で使い始める（3ステップ）
 
 ターミナルを開いて、上から順に貼り付けます。どれも **何も削除しません**。
 
 ```bash
-# 1) 取得（初回のみ）。フォルダ名が「-」で始まると扱いにくいため yojo-ai という名前で保存します
-#    （GitHub のログインを求められたら、ブラウザの指示に従ってください。
-#     難しければ GitHub の画面で「Code > Download ZIP」→ 解凍でも同じです）
-cd ~/Documents && git clone https://github.com/ydi1222/-2026.git yojo-ai && cd yojo-ai/AI_Orchestration
+# 1) 取得（初回のみ）。このリポジトリは公開設定なので、ログインなしで取得できます
+#    （いちばん簡単なのは docs/07 の「ZIPをダウンロード」する方法です）
+cd ~/Documents && git clone -b claude/ai-orchestration-handoff-opnmu8 https://github.com/YDI1222/-2026.git yojo-ai && cd yojo-ai/AI_Orchestration
 
 # 2) 診断（読み取りのみ。結果は logs/ に保存）
 bash workflows/obsidian_sync/diagnose_mac.sh

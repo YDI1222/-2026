@@ -115,9 +115,7 @@ flowchart LR
 ---
 
 ## 7. ゆうだいさんにお願いしたいこと
-1. Mac で `insight_digest.py` を試しに実行し、**出てきた気づきが「確かに自分の言葉だ」と思えるか** を見る（README の手順の後）
-   ```
-   python3 workflows/content_design/insight_digest.py --vault "<保管庫の場所>" --days 14 --out ~/Desktop/digest.md
-   ```
+1. Mac で試しに実行し、**出てきた気づきが「確かに自分の言葉だ」と思えるか** を見る
+   → 手順：`docs/07_Macで試す手順_初心者向け.md`（ドラッグ＆ドロップだけで動きます）
 2. 問題なければ、ChatGPT の週次SNSタスクの指示文を `content_design_prompt.md` に差し替える。
 3. 業務記録フォルダを分けたら、`config/obsidian_sync_excludes.txt` に追加する（D-2）。
